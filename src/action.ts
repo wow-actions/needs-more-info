@@ -33,10 +33,12 @@ export namespace Action {
           const miniTitleLength =
             options.miniTitleLength || config.miniTitleLength
           if (!badTitle && miniTitleLength != null) {
+            core.info('Check title length')
             badTitle = title.trim().length <= miniTitleLength
           }
 
           if (!badTitle) {
+            core.info('Check bad titles list')
             const badTitles = options.badTitles || config.badTitles
             badTitle =
               badTitles != null && badTitles.includes(title.toLowerCase())
@@ -49,6 +51,7 @@ export namespace Action {
                 : config.checkTemplate
 
             if (checkTemplate !== false) {
+              core.info('Check body with templates')
               badBody = !(isIssue
                 ? await Util.isIssueBodyValid(octokit, body!)
                 : await Util.isPullRequestBodyValid(octokit, body!))

@@ -1,3 +1,4 @@
+import * as core from '@actions/core'
 import * as github from '@actions/github'
 import merge from 'lodash.merge'
 import yaml from 'js-yaml'
@@ -42,12 +43,22 @@ export namespace Config {
 
   export async function get(
     octokit: ReturnType<typeof github.getOctokit>,
-    path: string,
+    path?: string,
   ): Promise<Definition> {
     try {
-      const content = await Util.getFileContent(octokit, path)
-      const config = yaml.safeLoad(content) as Definition
-      return config ? merge({}, defaults, config) : defaults
+      if (path) {
+        const content = await Util.getFileContent(octokit, path)
+
+        core.info(`Load config from ${path}`)
+        core.info(`Config content is: ${content}`)
+
+        const config = yaml.safeLoad(content) as Definition
+        if (config) {
+          return merge({}, defaults, config)
+        }
+      }
+
+      return defaults
     } catch (error) {
       if (error.status === 404) {
         return defaults
