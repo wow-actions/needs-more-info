@@ -13,4 +13,4 @@ runs:
   main: dist/index.js
 branding:
   icon: alert-triangle
-  color: coral
+  color: green
