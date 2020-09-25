@@ -6,7 +6,7 @@
 
 Create a `.github/workflows/needs-more-info.yml` file in the repository you want to install this action, then add the following to it:
 
-```yml
+```yaml
 name: Needs More Info
 on:
   pull_request:
