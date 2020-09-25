@@ -6,94 +6,104 @@ import { Util } from './util'
 
 export namespace Action {
   export async function run(context: Context = github.context) {
-    const isIssue = Util.isValidEvent('issues', 'opened')
-    const isPROpened = Util.isValidEvent('pull_request', 'opened')
-    if (isIssue || isPROpened) {
-      const payload = context.payload.issue || context.payload.pull_request
-      if (payload) {
-        const title = payload.title as string
-        const body = payload.body
-        const user = payload.user
+    try {
+      const isIssue = Util.isValidEvent('issues', 'opened')
+      const isPROpened = Util.isValidEvent('pull_request', 'opened')
+      if (isIssue || isPROpened) {
+        const payload = context.payload.issue || context.payload.pull_request
+        if (payload) {
+          const title = payload.title as string
+          const body = payload.body
+          const user = payload.user
 
-        let badBody = !body || !body.trim()
-        let badTitle = !title || !title.trim()
+          let badBody = !body || !body.trim()
+          let badTitle = !title || !title.trim()
 
-        const configPath = core.getInput('CONFIG_PATH')
-        const octokit = Util.getOctokit()
-        const ref: string = payload.head.ref
-        const config = await Config.get(octokit, configPath, ref)
+          const configPath = core.getInput('CONFIG_PATH')
+          const octokit = Util.getOctokit()
+          const config = await Config.get(octokit, configPath)
 
-        if (config.excludeUsers) {
-          if (config.excludeUsers.includes(user.login)) {
-            return
-          }
-        }
-
-        const options = (isIssue ? config.issue : config.pullRequest) || {}
-        if (!badTitle) {
-          const badTitles = options.badTitles || config.badTitles
-          badTitle =
-            badTitles != null && badTitles.includes(title.toLowerCase())
-        }
-
-        if (!badBody) {
-          const checkTemplate =
-            options.checkTemplate != null
-              ? options.checkTemplate
-              : config.checkTemplate
-
-          if (checkTemplate !== false) {
-            badBody = !(isIssue
-              ? await Util.isIssueBodyValid(octokit, body!)
-              : await Util.isPullRequestBodyValid(octokit, body!))
-          }
-        }
-
-        if (badTitle || badBody) {
-          const labelToAdd = options.labelToAdd || config.labelToAdd
-          if (labelToAdd && labelToAdd.trim()) {
-            await octokit.issues.addLabels({
-              ...context.repo,
-              issue_number: payload.number,
-              labels: [labelToAdd.trim()],
-            })
-          }
-        }
-
-        const badTitleComment =
-          options.badTitleComment || config.badTitleComment
-        const badBodyComment = options.badBodyComment || config.badBodyComment
-        const args = { author: payload.user.login }
-
-        if (
-          badBody &&
-          badTitle &&
-          badBodyComment &&
-          badTitleComment === badBodyComment
-        ) {
-          await octokit.issues.createComment({
-            ...context.repo,
-            issue_number: payload.number,
-            body: Util.pickComment(badBodyComment, args),
-          })
-        } else {
-          if (badTitle && badTitleComment) {
-            await octokit.issues.createComment({
-              ...context.repo,
-              issue_number: payload.number,
-              body: Util.pickComment(badTitleComment, args),
-            })
+          if (config.excludeUsers) {
+            if (config.excludeUsers.includes(user.login)) {
+              return
+            }
           }
 
-          if (badBody && badBodyComment) {
+          const options = (isIssue ? config.issue : config.pullRequest) || {}
+          if (!badTitle) {
+            const badTitles = options.badTitles || config.badTitles
+            badTitle =
+              badTitles != null && badTitles.includes(title.toLowerCase())
+          }
+
+          if (!badBody) {
+            const checkTemplate =
+              options.checkTemplate != null
+                ? options.checkTemplate
+                : config.checkTemplate
+
+            if (checkTemplate !== false) {
+              badBody = !(isIssue
+                ? await Util.isIssueBodyValid(octokit, body!)
+                : await Util.isPullRequestBodyValid(octokit, body!))
+            }
+          }
+
+          if (badTitle || badBody) {
+            const labelToAdd = options.labelToAdd || config.labelToAdd
+            if (labelToAdd && labelToAdd.trim()) {
+              await octokit.issues.addLabels({
+                ...context.repo,
+                issue_number: payload.number,
+                labels: [labelToAdd.trim()],
+              })
+            }
+          }
+
+          const badTitleComment =
+            options.badTitleComment ||
+            config.badTitleComment ||
+            config.defaultComment
+          const badBodyComment =
+            options.badBodyComment ||
+            config.badBodyComment ||
+            config.defaultComment
+
+          const args = { author: payload.user.login }
+
+          if (
+            badBody &&
+            badTitle &&
+            badBodyComment &&
+            badTitleComment === badBodyComment
+          ) {
             await octokit.issues.createComment({
               ...context.repo,
               issue_number: payload.number,
               body: Util.pickComment(badBodyComment, args),
             })
+          } else {
+            if (badTitle && badTitleComment) {
+              await octokit.issues.createComment({
+                ...context.repo,
+                issue_number: payload.number,
+                body: Util.pickComment(badTitleComment, args),
+              })
+            }
+
+            if (badBody && badBodyComment) {
+              await octokit.issues.createComment({
+                ...context.repo,
+                issue_number: payload.number,
+                body: Util.pickComment(badBodyComment, args),
+              })
+            }
           }
         }
       }
+    } catch (e) {
+      core.error(e)
+      core.setFailed(e.message)
     }
   }
 }

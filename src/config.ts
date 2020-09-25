@@ -41,10 +41,9 @@ export namespace Config {
   export async function get(
     octokit: ReturnType<typeof github.getOctokit>,
     path: string,
-    ref: string,
   ): Promise<Definition> {
     try {
-      const content = await Util.getFileContent(octokit, path, ref)
+      const content = await Util.getFileContent(octokit, path)
       const config = yaml.safeLoad(content) as Definition
       return config ? merge({}, defaults, config) : defaults
     } catch (error) {
