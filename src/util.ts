@@ -50,7 +50,7 @@ export namespace Util {
     }
   }
 
-  export async function getDirSubPaths(
+  async function getDirSubPaths(
     octokit: ReturnType<typeof getOctokit>,
     path: string,
   ): Promise<string[] | null> {
@@ -65,9 +65,7 @@ export namespace Util {
     }
   }
 
-  export async function getIssueTemplates(
-    octokit: ReturnType<typeof getOctokit>,
-  ) {
+  async function getIssueTemplates(octokit: ReturnType<typeof getOctokit>) {
     const defaultTemplate = await getFileContent(
       octokit,
       '.github/ISSUE_TEMPLATE.md',
@@ -93,10 +91,20 @@ export namespace Util {
     return []
   }
 
-  export async function getPullRequestTemplate(
+  async function getPullRequestTemplate(
     octokit: ReturnType<typeof getOctokit>,
   ) {
     return getFileContent(octokit, '.github/PULL_REQUEST_TEMPLATE.md')
+  }
+
+  function isMatchTemplate(body: string, template: string | null) {
+    if (template) {
+      const b = body.trim().replace(/[\r\n]/g, '')
+      const t = template.trim().replace(/[\r\n]/g, '')
+      return t.includes(b)
+    }
+
+    return false
   }
 
   export async function isIssueBodyValid(
@@ -107,11 +115,9 @@ export namespace Util {
       return false
     }
 
-    const templates = await Util.getIssueTemplates(octokit)
+    const templates = await getIssueTemplates(octokit)
     for (const template of templates) {
-      const b = body.trim().replace(/[\r\n]/g, '')
-      const t = template.trim().replace(/[\r\n]/g, '')
-      if (t.includes(b)) {
+      if (isMatchTemplate(body, template)) {
         return false
       }
     }
@@ -127,11 +133,7 @@ export namespace Util {
       return false
     }
 
-    const template = await Util.getPullRequestTemplate(octokit)
-    if (template && body.includes(template)) {
-      return false
-    }
-
-    return true
+    const template = await getPullRequestTemplate(octokit)
+    return !isMatchTemplate(body, template)
   }
 }
