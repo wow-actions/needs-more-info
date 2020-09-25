@@ -23,6 +23,10 @@ export namespace Action {
           const octokit = Util.getOctokit()
           const config = await Config.get(octokit, configPath)
 
+          core.info(
+            `Load config from "${configPath}": \n${JSON.stringify(config)}`,
+          )
+
           if (config.excludeUsers) {
             if (config.excludeUsers.includes(user.login)) {
               return

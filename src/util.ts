@@ -37,13 +37,17 @@ export namespace Util {
     octokit: ReturnType<typeof getOctokit>,
     path: string,
   ) {
-    const response = await octokit.repos.getContent({
-      ...github.context.repo,
-      path,
-    })
+    try {
+      const response = await octokit.repos.getContent({
+        ...github.context.repo,
+        path,
+      })
 
-    const content = response.data.content
-    return Buffer.from(content, 'base64').toString()
+      const content = response.data.content
+      return Buffer.from(content, 'base64').toString()
+    } catch (err) {
+      return null
+    }
   }
 
   export async function getDirSubPaths(

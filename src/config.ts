@@ -1,4 +1,3 @@
-import * as core from '@actions/core'
 import * as github from '@actions/github'
 import merge from 'lodash.merge'
 import yaml from 'js-yaml'
@@ -48,12 +47,8 @@ export namespace Config {
     try {
       if (path) {
         const content = await Util.getFileContent(octokit, path)
-
-        core.info(`Load config from ${path}`)
-        core.info(`Config content is: ${content}`)
-
-        const config = yaml.safeLoad(content) as Definition
-        if (config) {
+        if (content) {
+          const config = yaml.safeLoad(content) as Definition
           return merge({}, defaults, config)
         }
       }
