@@ -1,11 +1,10 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import { Context } from '@actions/github/lib/context'
-import { Config } from './config'
 import { Util } from './util'
+import { Config } from './config'
 
 export namespace Action {
-  export async function run(context: Context = github.context) {
+  export async function run(context = github.context) {
     try {
       const isIssue = Util.isValidEvent('issues', 'opened')
       const isPROpened = Util.isValidEvent('pull_request', 'opened')
