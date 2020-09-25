@@ -24,7 +24,11 @@ export namespace Action {
           const config = await Config.get(octokit, configPath)
 
           core.info(
-            `Load config from "${configPath}": \n${JSON.stringify(config)}`,
+            `Load config from "${configPath}": \n${JSON.stringify(
+              config,
+              null,
+              2,
+            )}`,
           )
 
           if (config.excludeUsers) {

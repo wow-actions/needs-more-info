@@ -20,7 +20,7 @@ jobs:
       - uses: bubkoo/needs-more-info@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_PATH: 'yaml config file path'
+          CONFIG_PATH: Yaml config file path
 ```
 
 ## Config
