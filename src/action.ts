@@ -19,7 +19,7 @@ export namespace Action {
           let badBody = !body || !body.trim()
           let badTitle = !title || !title.trim()
 
-          const configPath = core.getInput('CONFIG_PATH')
+          const configPath = core.getInput('CONFIG_FILE')
           const octokit = Util.getOctokit()
           const config = await Config.get(octokit, configPath)
 
