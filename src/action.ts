@@ -30,6 +30,12 @@ export namespace Action {
           }
 
           const options = (isIssue ? config.issue : config.pullRequest) || {}
+          const miniTitleLength =
+            options.miniTitleLength || config.miniTitleLength
+          if (!badTitle && miniTitleLength != null) {
+            badTitle = title.trim().length <= miniTitleLength
+          }
+
           if (!badTitle) {
             const badTitles = options.badTitles || config.badTitles
             badTitle =

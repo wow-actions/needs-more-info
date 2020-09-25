@@ -36,12 +36,10 @@ export namespace Util {
   export async function getFileContent(
     octokit: ReturnType<typeof getOctokit>,
     path: string,
-    ref?: string,
   ) {
     const response = await octokit.repos.getContent({
       ...github.context.repo,
       path,
-      ref,
     })
 
     const content = response.data.content

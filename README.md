@@ -40,6 +40,10 @@ interface Config {
    */
   checkTemplate?: boolean
   /**
+   * Default mini length of titles to check against for lack of descriptiveness.
+   */
+  miniTitleLength?: number
+  /**
    * Default titles to check against for lack of descriptiveness.
    */
   badTitles?: string[]
@@ -74,6 +78,10 @@ interface Config {
      */
     checkTemplate?: boolean
     /**
+     * Mini length of titles to check against for lack of descriptiveness.
+     */
+    miniTitleLength?: number
+    /**
      * Bad titles to check against for lack of descriptiveness.
      */
     badTitles?: string[]
@@ -103,6 +111,10 @@ interface Config {
      */
     checkTemplate?: boolean
     /**
+     * Mini length of titles to check against for lack of descriptiveness.
+     */
+    miniTitleLength?: number
+    /**
      * Bad titles to check against for lack of descriptiveness.
      */
     badTitles?: string[]
@@ -130,7 +142,8 @@ And the default config is:
 
 ```yaml
 checkTemplate: true
-labelToAdd: 'needs-more-info'
+labelToAdd: needs-more-info
+miniTitleLength: 8
 issue:
   badTitles:
     - update

@@ -6,6 +6,7 @@ import { Util } from './util'
 export namespace Config {
   export interface Section {
     checkTemplate?: boolean
+    miniTitleLength?: number
     badTitles?: string[]
     labelToAdd?: string
     badTitleComment?: string | string[]
@@ -21,6 +22,7 @@ export namespace Config {
 
   const defaults: Definition = {
     checkTemplate: true,
+    miniTitleLength: 8,
     labelToAdd: 'needs-more-info',
     issue: {
       badTitles: ['update', 'updates', 'test', 'issue', 'debug', 'demo'],
