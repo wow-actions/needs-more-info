@@ -172,3 +172,7 @@ pullRequest:
   badTitleComment: >
     We would appreciate it if you could provide us with more info about this pr!
 ```
+
+## License
+
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
