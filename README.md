@@ -25,7 +25,7 @@ jobs:
 
 ## Config
 
-Full config define as:
+Config definition:
 
 ```ts
 interface Config {
@@ -176,7 +176,7 @@ interface Config {
 }
 ```
 
-Custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:
+And custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:
 
 ```yaml
 checkTemplate: true
