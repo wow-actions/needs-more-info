@@ -176,6 +176,17 @@ interface Config {
 }
 ```
 
+Available reactions:
+
+- `+1` 👍
+- `-1` 👎
+- `laugh` 😄
+- `confused` 😕
+- `heart` ❤️
+- `hooray` 🎉
+- `rocket` 🚀
+- `eyes` 👀
+
 And custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:
 
 ```yaml
