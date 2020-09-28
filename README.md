@@ -14,7 +14,7 @@ on:
   issues:
     types: [opened]
 jobs:
-  test:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: bubkoo/needs-more-info@v1
