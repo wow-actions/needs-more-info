@@ -48,9 +48,23 @@ interface Config {
    */
   badTitles?: string[]
   /**
-   * Default Label to be added to issues or PRs with insufficient information given.
+   * Default label to be added to issues or PRs with insufficient
+   * information given.
    */
   labelToAdd?: string
+  /**
+   * Default reactions to be added to issues or PRs with insufficient
+   * information given.
+   *
+   * Available reactions: "-1" | "confused" | "+1" | "laugh" | "heart" |
+   * "hooray" | "rocket" | "eyes".
+   *
+   * Can be either a ,/space joined string or an reactions array.
+   * - '-1, confused'
+   * - '-1 confused'
+   * - ['-1', 'confused']
+   */
+  reactions?: string | string[]
   /**
    * Default message to comment on issues or PRs when have bad title.
    *
@@ -90,6 +104,18 @@ interface Config {
      */
     labelToAdd?: string
     /**
+     * Reactions to be added to issues with insufficient information given.
+     *
+     * Available reactions: "-1" | "confused" | "+1" | "laugh" | "heart" |
+     * "hooray" | "rocket" | "eyes".
+     *
+     * Can be either a ,/space joined string or an reactions array.
+     * - '-1, confused'
+     * - '-1 confused'
+     * - ['-1', 'confused']
+     */
+    reactions?: string | string[]
+    /**
      * Message to comment on issues when have bad title.
      *
      * Can be either a string or an array(random pick a comment).
@@ -105,9 +131,9 @@ interface Config {
 
   pullRequest?: {
     /**
-     * Require Pull Requests to contain more information than what is
-     * provided in the PR template. Will fail if the pull request's body
-     * is equal to the provided template.
+     * Require PRs to contain more information than what is provided in the PR
+     * template. Will fail if the pull request's body is equal to the provided
+     * template.
      */
     checkTemplate?: boolean
     /**
@@ -119,9 +145,21 @@ interface Config {
      */
     badTitles?: string[]
     /**
-     * Label to be added to Pull Requests with insufficient information given.
+     * Label to be added to PRs with insufficient information given.
      */
     labelToAdd?: string
+    /**
+     * Reactions to be added to PRs with insufficient information given.
+     *
+     * Available reactions: "-1" | "confused" | "+1" | "laugh" | "heart" |
+     * "hooray" | "rocket" | "eyes".
+     *
+     * Can be either a ,/space joined string or an reactions array.
+     * - '-1, confused'
+     * - '-1 confused'
+     * - ['-1', 'confused']
+     */
+    reactions?: string | string[]
     /**
      * Message to comment on PRs when have bad title.
      *
@@ -143,6 +181,9 @@ Custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with 
 ```yaml
 checkTemplate: true
 labelToAdd: needs-more-info
+reactions:
+  - '-1'
+  - confused
 miniTitleLength: 8
 issue:
   badTitles:

@@ -9,6 +9,7 @@ export namespace Config {
     miniTitleLength?: number
     badTitles?: string[]
     labelToAdd?: string
+    reactions?: string | string[]
     badTitleComment?: string | string[]
     badBodyComment?: string | string[]
   }
@@ -24,6 +25,7 @@ export namespace Config {
     checkTemplate: true,
     miniTitleLength: 8,
     labelToAdd: 'needs-more-info',
+    reactions: ['-1', 'confused'],
     issue: {
       badTitles: ['update', 'updates', 'test', 'issue', 'debug', 'demo'],
       badTitleComment:

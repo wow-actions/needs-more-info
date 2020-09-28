@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import { Util } from './util'
 import { Config } from './config'
+import { Reaction } from './reaction'
 
 export namespace Action {
   export async function run(context = github.context) {
@@ -84,8 +85,19 @@ export namespace Action {
             options.badBodyComment ||
             config.badBodyComment ||
             config.defaultComment
+          const reactions = options.reactions || config.reactions
 
           const args = { author: payload.user.login }
+          const createComment = async (comment: string | string[]) => {
+            const { data } = await octokit.issues.createComment({
+              ...context.repo,
+              issue_number: payload.number,
+              body: Util.pickComment(comment, args),
+            })
+            if (reactions) {
+              await Reaction.add(octokit, data.id, reactions)
+            }
+          }
 
           if (
             badBody &&
@@ -93,26 +105,14 @@ export namespace Action {
             badBodyComment &&
             badTitleComment === badBodyComment
           ) {
-            await octokit.issues.createComment({
-              ...context.repo,
-              issue_number: payload.number,
-              body: Util.pickComment(badBodyComment, args),
-            })
+            await createComment(badBodyComment)
           } else {
             if (badTitle && badTitleComment) {
-              await octokit.issues.createComment({
-                ...context.repo,
-                issue_number: payload.number,
-                body: Util.pickComment(badTitleComment, args),
-              })
+              await createComment(badTitleComment)
             }
 
             if (badBody && badBodyComment) {
-              await octokit.issues.createComment({
-                ...context.repo,
-                issue_number: payload.number,
-                body: Util.pickComment(badBodyComment, args),
-              })
+              await createComment(badBodyComment)
             }
           }
         }
