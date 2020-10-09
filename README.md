@@ -205,10 +205,14 @@ issue:
     - debug
     - demo
   badTitleComment: >
+    @{{ author }}
+    
     We would appreciate it if you could provide us with more info about this issue!
 
 
   badBodyComment: >
+    @{{ author }}
+    
     We would appreciate it if you could provide us with more info about this issue!
 
 
@@ -218,10 +222,14 @@ pullRequest:
     - updates
     - test
   badBodyComment: >
+    @{{ author }}
+    
     We would appreciate it if you could provide us with more info about this pr!
 
 
   badTitleComment: >
+    @{{ author }}
+    
     We would appreciate it if you could provide us with more info about this pr!
 ```
 
