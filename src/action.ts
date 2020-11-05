@@ -7,8 +7,14 @@ import { Reaction } from './reaction'
 export namespace Action {
   export async function run(context = github.context) {
     try {
+      core.debug(`event: ${context.eventName}`)
+      core.debug(`action: ${context.payload.action}`)
+
       const isIssue = Util.isValidEvent('issues', 'opened')
-      const isPROpened = Util.isValidEvent('pull_request', 'opened')
+      const isPROpened =
+        Util.isValidEvent('pull_request', 'opened') ||
+        Util.isValidEvent('pull_request_target', 'opened')
+
       if (isIssue || isPROpened) {
         const payload = context.payload.issue || context.payload.pull_request
         if (payload) {

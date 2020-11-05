@@ -1,7 +1,7 @@
 {
   "name": "needs-more-info",
   "description": "Github action to request more info from PRs/Issues with either the default title or a blank body.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "repository": "https://github.com/bubkoo/needs-more-info",
   "author": "bubkoo <bubkoo.wy@gmail.com>",
