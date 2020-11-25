@@ -48,7 +48,7 @@ export namespace Action {
             options.miniTitleLength || config.miniTitleLength
           if (!badTitle && miniTitleLength != null) {
             core.info('Check title length')
-            badTitle = title.trim().length <= miniTitleLength
+            badTitle = Util.getStringLength(title.trim()) <= miniTitleLength
           }
 
           if (!badTitle) {

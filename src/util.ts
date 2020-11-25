@@ -137,4 +137,16 @@ export namespace Util {
     const template = await getPullRequestTemplate(octokit)
     return !isMatchTemplate(body, template)
   }
+
+  export function getStringLength(str: string) {
+    let len = 0
+    for (let i = 0; i < str.length; i += 1) {
+      if (str.charCodeAt(i) > 127 || str.charCodeAt(i) === 94) {
+        len += 2
+      } else {
+        len += 1
+      }
+    }
+    return len
+  }
 }
