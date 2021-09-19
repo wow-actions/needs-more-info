@@ -48,7 +48,7 @@ export namespace Util {
       const { content } = res.data as any
       return Buffer.from(content, 'base64').toString()
     } catch (e) {
-      core.info(
+      core.debug(
         `[getFileContent] ${github.context.repo.owner}/${repo}/${path}: ${e}`,
       )
       return null
@@ -68,7 +68,7 @@ export namespace Util {
       })
       return (res.data as any).map((f: any) => f.path)
     } catch (e) {
-      core.info(
+      core.debug(
         `[getDirSubPaths] ${github.context.repo.owner}/${repo}/${path}: ${e}`,
       )
       return null
