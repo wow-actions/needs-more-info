@@ -1,6 +1,8 @@
 # Needs More Info
 
-> A Github Action to request more info from newly opened Pull Requests and Issues that contain either default titles or whose description is left blank.
+> Requests more info from newly opened issues/PRs that contain either default title/body or whose body is left blank.
+
+![issue-comment](https://github.com/wow-actions/needs-more-info/blob/master/screenshots/issue-comment.jpg?raw=true)
 
 ## Usage
 
@@ -17,9 +19,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: bubkoo/needs-more-info@v1
+      - uses: wow-actions/needs-more-info@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # config file path
           CONFIG_FILE: .github/workflows/config/needs-more-info.yml
 ```
 
