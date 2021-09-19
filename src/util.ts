@@ -39,16 +39,16 @@ export namespace Util {
     path: string,
   ) {
     try {
-      const response = await octokit.rest.repos.getContent({
+      const res = await octokit.rest.repos.getContent({
         owner: github.context.repo.owner,
         repo,
         path,
       })
 
-      const { content } = response.data as any
+      const { content } = res.data as any
       return Buffer.from(content, 'base64').toString()
     } catch (e) {
-      core.error(e)
+      core.info(`${github.context.repo.owner}${repo}/${path}: ${e}`)
       return null
     }
   }
@@ -65,7 +65,8 @@ export namespace Util {
         path,
       })
       return (res.data as any).map((f: any) => f.path)
-    } catch (err) {
+    } catch (e) {
+      core.info(`${github.context.repo.owner}${repo}/${path}: ${e}`)
       return null
     }
   }
