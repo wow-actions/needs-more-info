@@ -117,7 +117,7 @@ export namespace Util {
     paths = await getDirSubPaths(octokit, '.github', '.github/ISSUE_TEMPLATE')
     if (paths !== null) {
       const deferreds = paths.map((path) =>
-        getFileContent(octokit, github.context.repo.repo, path),
+        getFileContent(octokit, '.github', path),
       )
 
       const contents = await Promise.all(deferreds)
