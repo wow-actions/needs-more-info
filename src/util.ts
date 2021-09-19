@@ -48,7 +48,9 @@ export namespace Util {
       const { content } = res.data as any
       return Buffer.from(content, 'base64').toString()
     } catch (e) {
-      core.info(`${github.context.repo.owner}${repo}/${path}: ${e}`)
+      core.info(
+        `[getFileContent] ${github.context.repo.owner}/${repo}/${path}: ${e}`,
+      )
       return null
     }
   }
@@ -66,7 +68,9 @@ export namespace Util {
       })
       return (res.data as any).map((f: any) => f.path)
     } catch (e) {
-      core.info(`${github.context.repo.owner}${repo}/${path}: ${e}`)
+      core.info(
+        `[getDirSubPaths] ${github.context.repo.owner}/${repo}/${path}: ${e}`,
+      )
       return null
     }
   }
@@ -166,6 +170,8 @@ export namespace Util {
     }
 
     const templates = await getIssueTemplates(octokit)
+    core.debug(`templates: ${JSON.stringify(templates)}`)
+
     // eslint-disable-next-line no-restricted-syntax
     for (const template of templates) {
       if (isMatchTemplate(body, template)) {
