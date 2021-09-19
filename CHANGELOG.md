@@ -1,3 +1,10 @@
+## [1.0.11](https://github.com/wow-actions/needs-more-info/compare/v1.0.10...v1.0.11) (2021-09-19)
+
+
+### Bug Fixes
+
+* 🐛 get issue templates ([625baa5](https://github.com/wow-actions/needs-more-info/commit/625baa5ef71fca93ad78e7ac28eb009dae5bb427))
+
 ## [1.0.10](https://github.com/wow-actions/needs-more-info/compare/v1.0.9...v1.0.10) (2021-09-19)
 
 ## [1.0.9](https://github.com/wow-actions/needs-more-info/compare/v1.0.8...v1.0.9) (2021-09-19)
