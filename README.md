@@ -4,7 +4,7 @@
 
 ## Usage
 
-Create a `.github/workflows/needs-more-info.yml` file in the repository you want to install this action, then add the following to it:
+Create a `.github/workflows/needs-more-info.yml` file in the repository you want to install this action:
 
 ```yml
 name: Needs More Info
@@ -20,7 +20,7 @@ jobs:
       - uses: bubkoo/needs-more-info@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: Yaml config file path
+          CONFIG_FILE: .github/workflows/config/needs-more-info.yml
 ```
 
 ## Config
@@ -178,24 +178,27 @@ interface Config {
 
 Available reactions:
 
-- `+1` 👍
-- `-1` 👎
-- `laugh` 😄
-- `confused` 😕
-- `heart` ❤️
-- `hooray` 🎉
-- `rocket` 🚀
-- `eyes` 👀
+| content    | emoji |
+| ---------- | ----- |
+| `+1`       | 👍    |
+| `-1`       | 👎    |
+| `laugh`    | 😄    |
+| `confused` | 😕    |
+| `heart`    | ❤️    |
+| `hooray`   | 🎉    |
+| `rocket`   | 🚀    |
+| `eyes`     | 👀    |
 
 And custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:
 
 ```yaml
 checkTemplate: true
+miniTitleLength: 8
 labelToAdd: needs-more-info
 reactions:
   - '-1'
   - confused
-miniTitleLength: 8
+
 issue:
   badTitles:
     - update
@@ -204,32 +207,25 @@ issue:
     - issue
     - debug
     - demo
-  badTitleComment: >
+  badTitleComment: |
     @{{ author }}
-    
     We would appreciate it if you could provide us with more info about this issue!
 
-
-  badBodyComment: >
+  badBodyComment: |
     @{{ author }}
-    
     We would appreciate it if you could provide us with more info about this issue!
-
 
 pullRequest:
   badTitles:
     - update
     - updates
     - test
-  badBodyComment: >
+  badBodyComment: |
     @{{ author }}
-    
     We would appreciate it if you could provide us with more info about this pr!
 
-
-  badTitleComment: >
+  badTitleComment: |
     @{{ author }}
-    
     We would appreciate it if you could provide us with more info about this pr!
 ```
 

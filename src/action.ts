@@ -19,8 +19,8 @@ export namespace Action {
         const payload = context.payload.issue || context.payload.pull_request
         if (payload) {
           const title = payload.title as string
-          const body = payload.body
-          const user = payload.user
+          const { body } = payload
+          const { user } = payload
 
           let badBody = !body || !body.trim()
           let badTitle = !title || !title.trim()
@@ -75,7 +75,7 @@ export namespace Action {
           if (badTitle || badBody) {
             const labelToAdd = options.labelToAdd || config.labelToAdd
             if (labelToAdd && labelToAdd.trim()) {
-              await octokit.issues.addLabels({
+              await octokit.rest.issues.addLabels({
                 ...context.repo,
                 issue_number: payload.number,
                 labels: [labelToAdd.trim()],
@@ -95,7 +95,7 @@ export namespace Action {
 
           const args = { author: payload.user.login }
           const createComment = async (comment: string | string[]) => {
-            const { data } = await octokit.issues.createComment({
+            const { data } = await octokit.rest.issues.createComment({
               ...context.repo,
               issue_number: payload.number,
               body: Util.pickComment(comment, args),

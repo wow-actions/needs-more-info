@@ -1,25 +1,17 @@
 issue:
-  badTitleComment: >
+  badTitleComment: |
     @{{ author }}
-
     Please provide us with more info about this issue title.
 
-
-  badBodyComment: >
+  badBodyComment: |
     @{{ author }}
-
     Please provide us with more info about this issue.
 
-
 pullRequest:
-  badTitleComment: >
+  badTitleComment: |
     @{{ author }}
-
     Please provide us with more info about this pr title.
 
-
-  badBodyComment: >
+  badBodyComment: |
     @{{ author }}
-
     Please provide us with more info about this pr.
-

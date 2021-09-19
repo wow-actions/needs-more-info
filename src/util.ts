@@ -25,8 +25,8 @@ export namespace Util {
   }
 
   export function isValidEvent(event: string, action?: string) {
-    const context = github.context
-    const payload = context.payload
+    const { context } = github
+    const { payload } = context
     if (event === context.eventName) {
       return action == null || action === payload.action
     }
@@ -35,15 +35,17 @@ export namespace Util {
 
   export async function getFileContent(
     octokit: ReturnType<typeof getOctokit>,
+    repo: string,
     path: string,
   ) {
     try {
-      const response = await octokit.repos.getContent({
-        ...github.context.repo,
+      const response = await octokit.rest.repos.getContent({
+        owner: github.context.repo.owner,
+        repo,
         path,
       })
 
-      const content = response.data.content
+      const { content } = response.data as any
       return Buffer.from(content, 'base64').toString()
     } catch (e) {
       core.error(e)
@@ -53,11 +55,13 @@ export namespace Util {
 
   async function getDirSubPaths(
     octokit: ReturnType<typeof getOctokit>,
+    repo: string,
     path: string,
   ): Promise<string[] | null> {
     try {
-      const res = await octokit.repos.getContent({
-        ...github.context.repo,
+      const res = await octokit.rest.repos.getContent({
+        owner: github.context.repo.owner,
+        repo,
         path,
       })
       return (res.data as any).map((f: any) => f.path)
@@ -67,8 +71,9 @@ export namespace Util {
   }
 
   async function getIssueTemplates(octokit: ReturnType<typeof getOctokit>) {
-    const defaultTemplate = await getFileContent(
+    let defaultTemplate = await getFileContent(
       octokit,
+      github.context.repo.repo,
       '.github/ISSUE_TEMPLATE.md',
     )
 
@@ -76,26 +81,69 @@ export namespace Util {
       return [defaultTemplate]
     }
 
-    const paths = await getDirSubPaths(octokit, '.github/ISSUE_TEMPLATE')
-    if (paths !== null) {
-      const templates = []
-      for (const path of paths) {
-        const template = await getFileContent(octokit, path)
-        if (template != null) {
-          templates.push(template)
-        }
-      }
-
-      return templates
+    defaultTemplate = await getFileContent(
+      octokit,
+      '.github',
+      '.github/ISSUE_TEMPLATE.md',
+    )
+    if (defaultTemplate != null) {
+      return [defaultTemplate]
     }
 
-    return []
+    const templates: string[] = []
+    let paths = await getDirSubPaths(
+      octokit,
+      github.context.repo.repo,
+      '.github/ISSUE_TEMPLATE',
+    )
+    if (paths !== null) {
+      const deferreds = paths.map((path) =>
+        getFileContent(octokit, github.context.repo.repo, path),
+      )
+
+      const contents = await Promise.all(deferreds)
+      contents.forEach((content) => {
+        if (content) {
+          templates.push(content)
+        }
+      })
+    }
+
+    paths = await getDirSubPaths(octokit, '.github', '.github/ISSUE_TEMPLATE')
+    if (paths !== null) {
+      const deferreds = paths.map((path) =>
+        getFileContent(octokit, github.context.repo.repo, path),
+      )
+
+      const contents = await Promise.all(deferreds)
+      contents.forEach((content) => {
+        if (content) {
+          templates.push(content)
+        }
+      })
+    }
+
+    return templates
   }
 
   async function getPullRequestTemplate(
     octokit: ReturnType<typeof getOctokit>,
   ) {
-    return getFileContent(octokit, '.github/PULL_REQUEST_TEMPLATE.md')
+    let template = getFileContent(
+      octokit,
+      github.context.repo.repo,
+      '.github/PULL_REQUEST_TEMPLATE.md',
+    )
+
+    if (template == null) {
+      template = getFileContent(
+        octokit,
+        '.github',
+        '.github/PULL_REQUEST_TEMPLATE.md',
+      )
+    }
+
+    return template
   }
 
   function isMatchTemplate(body: string, template: string | null) {
@@ -117,6 +165,7 @@ export namespace Util {
     }
 
     const templates = await getIssueTemplates(octokit)
+    // eslint-disable-next-line no-restricted-syntax
     for (const template of templates) {
       if (isMatchTemplate(body, template)) {
         return false

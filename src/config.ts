@@ -48,9 +48,13 @@ export namespace Config {
   ): Promise<Definition> {
     try {
       if (path) {
-        const content = await Util.getFileContent(octokit, path)
+        const content = await Util.getFileContent(
+          octokit,
+          github.context.repo.repo,
+          path,
+        )
         if (content) {
-          const config = yaml.safeLoad(content) as Definition
+          const config = yaml.load(content) as Definition
           return merge({}, defaults, config)
         }
       }
