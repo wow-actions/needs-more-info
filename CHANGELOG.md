@@ -1,3 +1,5 @@
+## [1.0.10](https://github.com/wow-actions/needs-more-info/compare/v1.0.9...v1.0.10) (2021-09-19)
+
 ## [1.0.9](https://github.com/wow-actions/needs-more-info/compare/v1.0.8...v1.0.9) (2021-09-19)
 
 
