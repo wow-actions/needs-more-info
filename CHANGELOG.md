@@ -1,3 +1,10 @@
+## [1.0.14](https://github.com/wow-actions/needs-more-info/compare/v1.0.13...v1.0.14) (2021-09-20)
+
+
+### Bug Fixes
+
+* typos ([21d40ee](https://github.com/wow-actions/needs-more-info/commit/21d40eeabd75ed6d3dcb2eb033980b3d045ab334))
+
 ## [1.0.13](https://github.com/wow-actions/needs-more-info/compare/v1.0.12...v1.0.13) (2021-09-19)
 
 ## [1.0.12](https://github.com/wow-actions/needs-more-info/compare/v1.0.11...v1.0.12) (2021-09-19)
