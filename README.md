@@ -1,6 +1,5 @@
-# Needs More Info
-
-> Requests more info from newly opened issues/PRs that contain either default title/body or whose body is left blank.
+<h1 align="center">Needs More Info</h1>
+<p align="center"><strong>Requests more info from newly opened issues/PRs that contain either default title/body or whose body is left blank</strong></p>
 
 ![issue-comment](https://github.com/wow-actions/needs-more-info/blob/master/screenshots/issue-comment.jpg?raw=true)
 
@@ -12,9 +11,9 @@ Create a `.github/workflows/needs-more-info.yml` file in the repository you want
 name: Needs More Info
 on:
   pull_request:
-    types: [opened]
+    types: [opened, edited, reopened]
   issues:
-    types: [opened]
+    types: [opened, edited, reopened]
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -182,15 +181,15 @@ interface Config {
 Available reactions:
 
 | content    | emoji |
-| ---------- | ----- |
-| `+1`       | 👍    |
-| `-1`       | 👎    |
-| `laugh`    | 😄    |
-| `confused` | 😕    |
-| `heart`    | ❤️    |
-| `hooray`   | 🎉    |
-| `rocket`   | 🚀    |
-| `eyes`     | 👀    |
+| ---------- | :---: |
+| `+1`       |  👍   |
+| `-1`       |  👎   |
+| `laugh`    |  😄   |
+| `confused` |  😕   |
+| `heart`    |  ❤️   |
+| `hooray`   |  🎉   |
+| `rocket`   |  🚀   |
+| `eyes`     |  👀   |
 
 And custom config will be [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:
 
