@@ -29,16 +29,16 @@ export namespace Config {
     issue: {
       badTitles: ['update', 'updates', 'test', 'issue', 'debug', 'demo'],
       badTitleComment:
-        'We would appreciate it if you could provide us with more info about this issue!',
+        '@{{ author }} We would appreciate it if you could provide us with more info about this issue!',
       badBodyComment:
-        'We would appreciate it if you could provide us with more info about this issue!',
+        '@{{ author }} We would appreciate it if you could provide us with more info about this issue!',
     },
     pullRequest: {
       badTitles: ['update', 'updates', 'test'],
       badBodyComment:
-        'We would appreciate it if you could provide us with more info about this pr!',
+        '@{{ author }} We would appreciate it if you could provide us with more info about this PR!',
       badTitleComment:
-        'We would appreciate it if you could provide us with more info about this pr!',
+        '@{{ author }} We would appreciate it if you could provide us with more info about this PR!',
     },
   }
 

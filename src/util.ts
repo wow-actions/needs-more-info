@@ -2,13 +2,9 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import mustache from 'mustache'
 import random from 'lodash.random'
+import { Octokit } from './octokit'
 
 export namespace Util {
-  export function getOctokit() {
-    const token = core.getInput('GITHUB_TOKEN', { required: true })
-    return github.getOctokit(token)
-  }
-
   export function pickComment(
     comment: string | string[],
     args?: { [key: string]: string },
@@ -34,7 +30,7 @@ export namespace Util {
   }
 
   export async function getFileContent(
-    octokit: ReturnType<typeof getOctokit>,
+    octokit: Octokit,
     repo: string,
     path: string,
   ) {
@@ -56,7 +52,7 @@ export namespace Util {
   }
 
   async function getDirSubPaths(
-    octokit: ReturnType<typeof getOctokit>,
+    octokit: Octokit,
     repo: string,
     path: string,
   ): Promise<string[] | null> {
@@ -75,7 +71,7 @@ export namespace Util {
     }
   }
 
-  async function getIssueTemplates(octokit: ReturnType<typeof getOctokit>) {
+  async function getIssueTemplates(octokit: Octokit) {
     let defaultTemplate = await getFileContent(
       octokit,
       github.context.repo.repo,
@@ -131,9 +127,7 @@ export namespace Util {
     return templates
   }
 
-  async function getPullRequestTemplate(
-    octokit: ReturnType<typeof getOctokit>,
-  ) {
+  async function getPullRequestTemplate(octokit: Octokit) {
     let template = getFileContent(
       octokit,
       github.context.repo.repo,
@@ -161,10 +155,7 @@ export namespace Util {
     return false
   }
 
-  export async function isIssueBodyValid(
-    octokit: ReturnType<typeof getOctokit>,
-    body: string,
-  ) {
+  export async function isIssueBodyValid(octokit: Octokit, body: string) {
     if (!body || !body.trim()) {
       return false
     }
@@ -182,10 +173,7 @@ export namespace Util {
     return true
   }
 
-  export async function isPullRequestBodyValid(
-    octokit: ReturnType<typeof getOctokit>,
-    body: string,
-  ) {
+  export async function isPullRequestBodyValid(octokit: Octokit, body: string) {
     if (!body || !body.trim()) {
       return false
     }
