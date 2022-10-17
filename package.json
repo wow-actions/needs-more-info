@@ -1,7 +1,7 @@
 {
   "name": "needs-more-info",
   "description": "Github action to request more info from PRs/Issues with either the default title or a blank body.",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "repository": "https://github.com/wow-actions/needs-more-info",
   "files": [
@@ -53,7 +53,6 @@
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vercel/ncc": "^0.31.1",
-    "devmoji": "^2.3.0",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
